@@ -1,0 +1,32 @@
+https://www.udemy.com/the-python-mega-course/learn/v4/questions/6222058
+
+Hi Shivani
+
+I had a similar problem: [A]async callback error, and [B] only zeroes seen in array.
+
+I hope this might help - there could be 2 issues here:
+
+[A] the async callback error might, or might not, be to do with some memory problem with VideoCapture in opencv4.0.0 (including, circa early 2019, opencv-python 4.0.0.21?). I re-installed an older opencv version using
+pip3 install opencv-python==3.4.2.16
+and the scary async error message seems to have gone away. All the other scripts using opencv-python/cv2 are still working.
+
+[B] in my console window, from the camera frame I too saw only zeroes in the array (even after rolling back to an older opencv-python version). However, when, at the top of the script, the following lines are added (as per SO answer)
+import numpy as np
+np.set_printoptions(threshold=np.inf)       # print out all of numpy array
+
+I then saw (phew! :) ) a huge array with zeroes around the edges but reassuringly non-zero numbers inward from the margins. The drawback is that this may flood your console in array text! (Maybe zeroes around the edges occur only with certain cameras?) If you do this and see some positive numbers - if this was the problem - then you too may be good to go. If not, then I'm sorry, and I wish you good luck.
+
+https://github.com/opencv/opencv/issues/13255
+
+https://stackoverflow.com/q/1987694
+
+FIX: findContours - ValueError: not enough values to unpack (expected 3, got 2)
+
+Hi there:  a recent (circa early 2019) change to openCV 4.0.0 might bring up an error for Ardit's cv2.findContour call on line 21:
+    (_, cnt, _) = cv2.findContours(threshold_delta_frame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+The change makes the tuple of returned values from findContour contain only 2 values, rather than 3, as former versions eg 3.4.2.
+In case of this, a SO answer suggests that the line now be amended to: 
+    (contours, _) = cv2.findContours(threshold_delta_frame.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+https://stackoverflow.com/a/54166934
+
