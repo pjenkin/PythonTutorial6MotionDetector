@@ -20,7 +20,7 @@ np.set_printoptions(threshold=np.inf)       # print out all of numpy array
 first_frame = None
 motion_status_list = [None, None]           # initialise status list so that first negative index checks will work
 motion_times_list = []
-df = pandas.DataFrame(columns=['Start', 'End'])
+df = pandas.DataFrame(columns=['Start', 'Finish'])
 
 video = cv2.VideoCapture(0)
 
@@ -55,7 +55,7 @@ while True:
     # tuple returned -
 
     for contour in contours:
-        if cv2.contourArea(contour) < 2e3:      # if bigger than a certain number of pixels e.g. 1e3
+        if cv2.contourArea(contour) < 3e3:      # if bigger than a certain number of pixels e.g. 1e3
             continue                    # continue back to the beginning of the loop - go no further in this loop
         motion_status = 1
         (x, y, width, height) = cv2.boundingRect(contour)      # else
@@ -63,10 +63,15 @@ while True:
         # from top left on original frame, draw 3-pixel BGR green rectangle
 
     motion_status_list.append(motion_status)
+
+    motion_status_list = motion_status_list[-2:]    # improvement 17-207? to print out only last 2 motionstatus values
+
     if motion_status_list[-1] == 1 and motion_status_list[-2] == 0:
         motion_times_list.append(datetime.now())
-    if motion_status_list[-1] == 1 and motion_status_list[-2] == 1:
+        print('recording date/time: start')
+    if motion_status_list[-1] == 0 and motion_status_list[-2] == 1:
         motion_times_list.append(datetime.now())
+        print('recording date/time: finish')
     cv2.imshow('Capturing Grey', grey)
     cv2.imshow('Delta frame', delta_frame)
     cv2.imshow('Threshold frame', threshold_delta_frame)
@@ -92,7 +97,7 @@ print('Motion times list: ' + str(motion_times_list))
 start_finish_list = timepair(motion_times_list)             # generate list of pairs of start/finish times - PNJ
 
 for timestamp_pair in start_finish_list:                    # write pairs of start/finish times to csv
-    df = df.append({'Start': timestamp_pair[0], 'End': timestamp_pair[1]}, ignore_index=True)
+    df = df.append({'Start': timestamp_pair[0], 'Finish': timestamp_pair[1]}, ignore_index=True)
 
 df.to_csv('Times.csv')
 

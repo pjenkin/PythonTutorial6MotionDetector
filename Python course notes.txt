@@ -686,7 +686,58 @@ df.to_csv('Times.csv')
 
 
 17-192  matplotlib & seaborn: older maths/charting library
+17-193 pip3 install bokeh  (after activate, as ever - but also install globally if using Jupyter Notebook)
+17-194 NB problem Edge + Jupyter Notebook
+#import Bokeh
+from bokeh.plotting import figure
+from bokeh.io import output_file, show
+import pandas
 
+#prepare some data
+x = [1,2,3,4,5]
+y = [6,7,8,9,10]
+
+#prepare the output file
+output_file('BasicLine.html')
+
+#create figure object
+fig = figure()
+
+#create line plot, using x & y arrays
+fig.line(x,y)
+
+# write the plot to html file & show
+show(fig)
+
+17-197 from csv (with header row) read_csv to pandas dataframe; then from dataframe columns (e.g. x = df['x]) to Bokeh chart series
+17-198 practice
+17-200 NB if "ModuleNotFoundError: no module named 'xlrd'" (xlrd is for ) globally pip3 install xlrd - to do with loading Excel .xslx file
+17-201 Display properties for plots e.g.
+p=figure(plot_width=500,plot_height=400, tools='pan',logo=None) 
+p.title.text="Cool Data"
+p.title.text_color="Gray"
+p.title.text_font="times"
+p.title.text_font_style="bold"
+p.title.text_font_size="36pt"
+p.xaxis.minor_tick_line_color=None
+p.yaxis.minor_tick_line_color=None
+p.xaxis.axis_label="Date"
+p.yaxis.axis_label="Intensity" 
+17-202 practice  - dataframe = pandas.read_excel('verlegenhuken.xlsx')  - fig.scatter(temperature_x, pressure_y)
+
+17-205 https://www.alphavantage.co/support/#api-key    0U1XJSQJG1EXCE3V   API key for Alpha Vantage (in lieu of functional Google/Yahoo APIs)  https://www.alphavantage.co/documentation/    
+sizing_mode=scale_both - https://bokeh.pydata.org/en/latest/docs/reference/layouts.html   - x_axis_type="datetime" to handle dates
+17-206 figure.quad for quadrants (areas) using arrays/dataframe-series
+17-207 Bokeh quadrants and formatting - fig = figure(x_axis_type="datetime", height=100, width=500, sizing_mode="scale_both", title="Motion Graph")
+fig.yaxis.minor_tick_line_color = None
+fig.ygrid[0].ticker.desired_num_ticks = 1
+quadrant = fig.quad(left=df['Start'], right=df['Finish'], bottom=0, top=1, color="green")
+output_file("Graph.html")
+show(fig)
+17-208 (Bokeh) HoverTool with tooltips hover = HoverTool(tooltips=[('Start: ', '@Start'), ('Finish: ', '@Finish')]);   figure.add_tools(hover)
+(Bokeh) ColumnDataSource - column_data_source = ColumnDataSource(df); - in figure(.... , source = column_data_source - will enable , e.g. '@Start'
+couldn't get Hovertool's Source (for dat/time start) to work without RuntimeError: Expected left and right to reference fields in the supplied data source.
+ 
 
 -----------------------------------------------
 
@@ -714,3 +765,4 @@ mmmmm
 then (theh)
 so you get (syiget)
 column (com)
+csv (seesvee)
