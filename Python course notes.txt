@@ -659,7 +659,7 @@ https://docs.opencv.org/3.4.2/d3/dc0/group__imgproc__shape.html#ga17ed9f5d79ae97
         # from top left on original frame, draw 3-pixel BGR green rectangle
 
 NB continue - in loop meaning continue immediately back to next iteration/check in loop and do not process code below in loop branch
-16-191 NB extended slices https://stackoverflow.com/a/3453103   https://stackoverflow.com/a/50798932  - generator?? https://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/
+16-191 NB extended slices https://stackoverflow.com/a/3453103   https://stackoverflow.com/a/50798932  - generator?? https://jeffknupp.com/blog/2013/04/07/improve-your-python-yield-and-generators-explained/  cf list slicing
 e.g. 
 def timepair(timelist):
     """generator for converting a list of start-finish times into a list of pairs"""
@@ -736,8 +736,16 @@ output_file("Graph.html")
 show(fig)
 17-208 (Bokeh) HoverTool with tooltips hover = HoverTool(tooltips=[('Start: ', '@Start'), ('Finish: ', '@Finish')]);   figure.add_tools(hover)
 (Bokeh) ColumnDataSource - column_data_source = ColumnDataSource(df); - in figure(.... , source = column_data_source - will enable , e.g. '@Start'
-couldn't get Hovertool's Source (for dat/time start) to work without RuntimeError: Expected left and right to reference fields in the supplied data source.
+df['Start_string'] = df['Start'].dt.strftime("%Y-%m-%d %H:%M:%S")
+df['Finish_string'] = df['Finish'].dt.strftime("%Y-%m-%d %H:%M:%S")
+hover = HoverTool(tooltips=[('Start: ', '@Start_string'), ('Finish: ', '@Finish_string')])
+fig.add_tools(hover) #  - RuntimeError: Expected left and right to reference fields in the supplied data source.
+quadrant = fig.quad(left='Start', right='Finish', bottom=0, top=1, color="green", source=column_data_source)
  
+18-209 web scraping using Beautiful Soup
+
+
+
 
 -----------------------------------------------
 

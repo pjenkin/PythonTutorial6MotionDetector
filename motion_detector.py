@@ -99,6 +99,9 @@ start_finish_list = timepair(motion_times_list)             # generate list of p
 for timestamp_pair in start_finish_list:                    # write pairs of start/finish times to csv
     df = df.append({'Start': timestamp_pair[0], 'Finish': timestamp_pair[1]}, ignore_index=True)
 
+
+
+
 df.to_csv('Times.csv')
 
 video.release()
